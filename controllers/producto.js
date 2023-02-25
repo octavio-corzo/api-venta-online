@@ -41,28 +41,27 @@ const postProducto = async (req = request, res = response) => {
 
     const productoDB = await Producto.findOne({ nombre: body.nombre });
 
-    // Validacion si el producto ya existe
-    if (productoDB) {
+    //validacion si el producto ya existe
+    if ( productoDB ) {
         return res.status(400).json({
-            msg: `El producto ${productoDB.nombre} ya existe en la DB`
-        })
+            msg: `El producto ${ productoDB.nombre }, ya existe en la DB`
+        });
     }
 
-    //Generar la data
+    //Generar la data a guardar
     const data = {
         ...body,
         nombre: body.nombre.toUpperCase(),
-        usuario: req.usuario._id,
-        // categoria: req.categoria._id
+        usuario: req.usuario._id
     }
 
-    const producto = await Producto(data);
+    const producto = await Producto( data );
 
-    //Guardar en la DB
+    //Guardar en DB
     await producto.save();
 
-    res.status(201).json(producto);
-
+    res.status(201).json( producto );
+   
 }
 
 const putProducto = async (req = request, res = response) => {

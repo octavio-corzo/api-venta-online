@@ -23,7 +23,7 @@ router.get('/:id', [
 ], getProductoPorID);
     
 //Crear categoria si el usuario esta logeado - privada - token valido
-router.post('/agregar', [
+router.post('/agregarProducto', [
     validarJWT,
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     validarCampos
