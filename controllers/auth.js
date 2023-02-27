@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const { generarJWT } = require('../helpers/generar-jwt');
 const Usuario = require('../models/usuario');
+const Producto = require('../models/producto')
 
 const login = async (req = request, res = response) => {
 
@@ -49,11 +50,51 @@ const login = async (req = request, res = response) => {
         });
     }
 
+}
+
+const jwtProducto = async (req = request, res = response) => {
+
+    const { nombre } = req.body;
+
+    try {
+
+        //Verficiar si el email existe
+        const producto = await Producto.findOne({ nombre });
+        if ( !producto ) {
+            return res.status(400).json({
+                msg: 'El nombre del producto no existe'
+            });
+        }
+
+        //Si el usuario esta activo (estado = false)
+        if ( !producto.estado ) {
+            return res.status(400).json({
+                msg: 'El producto tiene estado: false'
+            });
+        }
+        
+        //Generar JWT
+        const token = await generarJWT( producto.id );
+
+        res.json({
+            msg: 'producto token PATH',
+            nombre,
+            token
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Hable con el administrador (BackEnd)'
+        });
+    }
+
 
 
 }
 
 
 module.exports = {
-    login
+    login,
+    jwtProducto
 }
