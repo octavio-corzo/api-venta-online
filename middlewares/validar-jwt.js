@@ -2,6 +2,7 @@ const { response, request } = require('express');
 const jwt = require('jsonwebtoken');
 
 const Usuario = require('../models/usuario');
+const Producto = require('../models/producto');
 
 const validarJWT = async( req = request, res= response, next ) => {
 
@@ -51,5 +52,6 @@ const validarJWT = async( req = request, res= response, next ) => {
 }
 
 module.exports = {
-    validarJWT
+    validarJWT,
+    
 }
