@@ -13,6 +13,7 @@ class Server {
             auth: '/api/auth',
             buscar: '/api/buscar',
             categorias: '/api/categorias',
+            carritos: '/api/carritos',
             productos: '/api/productos',
             usuarios: '/api/usuarios'
         }
@@ -39,6 +40,7 @@ class Server {
         this.app.use(this.paths.auth, require('../routes/auth'));
         this.app.use(this.paths.buscar, require('../routes/buscar'));
         this.app.use(this.paths.categorias, require('../routes/categoria'));
+        this.app.use(this.paths.carritos, require('../routes/carrito-de-compras'));
         this.app.use(this.paths.productos, require('../routes/producto'));
         this.app.use(this.paths.usuarios, require('../routes/usuario'));
     }
