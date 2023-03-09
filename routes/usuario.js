@@ -40,6 +40,13 @@ router.put('/editar/:id', [
     validarCampos
 ] ,putUsuario);
 
+router.delete('/eliminarAdmin/:id', [
+    validarJWT,
+    check('id', 'No es un ID válido').isMongoId(),
+    check('id').custom( existeUsuarioPorId ),
+    validarCampos
+] ,deleteUsuario);
+
 
 router.delete('/eliminar/:id', [
     validarJWT,

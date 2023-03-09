@@ -14,6 +14,7 @@ class Server {
             buscar: '/api/buscar',
             categorias: '/api/categorias',
             carritos: '/api/carritos',
+            facturas: '/api/facturas',
             productos: '/api/productos',
             usuarios: '/api/usuarios'
         }
@@ -41,6 +42,7 @@ class Server {
         this.app.use(this.paths.buscar, require('../routes/buscar'));
         this.app.use(this.paths.categorias, require('../routes/categoria'));
         this.app.use(this.paths.carritos, require('../routes/carrito-de-compras'));
+        this.app.use(this.paths.facturas, require('../routes/factura'));
         this.app.use(this.paths.productos, require('../routes/producto'));
         this.app.use(this.paths.usuarios, require('../routes/usuario'));
     }

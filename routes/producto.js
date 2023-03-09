@@ -14,7 +14,7 @@ const router = Router();
 //Manejo de rutas
 
 //Obtener todas las categorias - publico
-router.get('/', getProductos);
+router.get('/mostrar', getProductos);
 
 router.get('/:id', [
     check('id', 'No es un id de Mongo Válido').isMongoId(),
@@ -28,6 +28,12 @@ router.post('/agregarProducto', [
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     validarCampos
 ],postProducto);
+
+router.post('/agregarProductos', [
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    
+    validarCampos,
+] ,postProducto);
 
 // Actualizar categoria con token valido
 router.put('/editar/:id', [

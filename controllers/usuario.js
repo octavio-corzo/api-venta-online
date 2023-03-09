@@ -68,7 +68,6 @@ const putUsuario = async (req = request, res = response) => {
 const deleteUsuario = async(req = request, res = response) => {
     //Req.params sirve para traer parametros de las rutas
     const { id } = req.params;
-
     //Eliminar fisicamente de la DB
     //const usuarioEliminado = await Usuario.findByIdAndDelete( id);
 

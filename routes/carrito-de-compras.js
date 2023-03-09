@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getCarrito, postCarrito} = require('../controllers/carrito-de-compras');
+const { getCarrito, postCarrito, putCarrito} = require('../controllers/carrito-de-compras');
 
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT, validarJWTProducto } = require('../middlewares/validar-jwt');
@@ -17,6 +17,14 @@ router.post('/agregarCarrito',[
     validarCampos
 ], postCarrito)
 
+router.put ('/editar/:id',[
+    validarJWT,
+    tieneRole('CLIENT_ROLE'),
+    check('carrito', 'El nombre es obligatorio').not().isEmpty(),
+    validarCampos
+], putCarrito)
+
+// idEmpresa = req.empresa.id
 
 /*router.put('/editar/:id', putCategoria)
 

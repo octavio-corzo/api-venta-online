@@ -8,7 +8,8 @@ const getCarrito = async (req = request, res = response) => {
   
     const listaCarritos = await Promise.all([
       Carrito.countDocuments(query),
-      Carrito.find(query).populate("usuario", "nombre"),
+      Carrito.find(query).populate("usuario", "nombre").populate('productos',)
+      //.populate('productos', 'precio'),
     ]);
   
     res.json({
@@ -62,5 +63,3 @@ module.exports = {
     postCarrito,
     putCarrito,
 }
-
-//Carrito de compras
