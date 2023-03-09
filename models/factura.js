@@ -19,6 +19,11 @@ const FacturaSchema = Schema({
         ref: 'Usuario',
         required: true
     },
+    productos: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Producto',
+        required: true
+    }],
     carrito: {
         type: Schema.Types.ObjectId,
         ref: 'Carrito',

@@ -29,7 +29,12 @@ const UsuarioSchema = Schema({
     google: {
         type: Boolean,
         default: false
-    }
+    },
+    compras: [{
+        type: Schema.Types.ObjectId,
+        ref: 'factura',
+        required: true
+    }]
 });
 
 

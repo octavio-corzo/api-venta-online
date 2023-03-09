@@ -1,7 +1,7 @@
 //Importaciones
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getUsuarios, postUsuario, putUsuario, deleteUsuario } = require('../controllers/usuario');
+const { getUsuarios, postUsuario, putUsuario, deleteUsuario, putAdmin } = require('../controllers/usuario');
 const { esRoleValido, emailExiste, existeUsuarioPorId } = require('../helpers/db-validators');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
@@ -36,9 +36,14 @@ router.post('/agregarAdmin', [
 router.put('/editar/:id', [
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( existeUsuarioPorId ),
-    check('rol').custom(  esRoleValido ),
     validarCampos
 ] ,putUsuario);
+
+router.put('/editarAdmin', [
+    validarJWT,
+    esAdminRole,
+    validarCampos
+] ,putAdmin);
 
 router.delete('/eliminarAdmin/:id', [
     validarJWT,
@@ -50,8 +55,6 @@ router.delete('/eliminarAdmin/:id', [
 
 router.delete('/eliminar/:id', [
     validarJWT,
-    //esAdminRole,
-    tieneRole('ADMIN_ROLE', 'SUPERADMIN_ROLE', 'COORDINADOR_ROLE'),
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( existeUsuarioPorId ),
     validarCampos

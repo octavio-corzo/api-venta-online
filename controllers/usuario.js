@@ -10,13 +10,25 @@ const getUsuarios = async (req = request, res = response) => {
 
     const listaUsuarios = await Promise.all([
         Usuario.countDocuments(query),
-        Usuario.find(query)
+        Usuario.find(query).populate("compras", )
     ]);
 
     res.json({
         msg: 'get Api - Controlador Usuario',
         listaUsuarios
     });
+
+}
+
+const getUsuariosPorId = async (req = request, res = response) => {
+
+    const { id } = req.params;
+    const userById = await Usuario.findById(id)
+        .populate('usuario', 'correo')
+        .populate('categoria', 'nombre')
+
+
+    res.status(201).json(userById);
 
 }
 
@@ -42,13 +54,9 @@ const postUsuario = async (req = request, res = response) => {
 
 
 const putUsuario = async (req = request, res = response) => {
-
-    //Req.params sirve para traer parametros de las rutas
     const { id } = req.params;
     const { _id, img,  /* rol,*/  estado, google, ...resto } = req.body;
-    //Los parametros img, rol, estado y google no se modifican, el resto de valores si (nombre, correo y password)
 
-    //Si la password existe o viene en el req.body, la encripta
     if ( resto.password ) {
         //Encriptar password
         const salt = bcrypt.genSaltSync();
@@ -56,7 +64,26 @@ const putUsuario = async (req = request, res = response) => {
     }
 
     //Editar al usuario por el id
-    const usuarioEditado = await Usuario.findByIdAndUpdate(id, resto);
+    const usuarioEditado = await Usuario.findByIdAndUpdate(id, resto, {new: true});
+
+    res.json({
+        msg: 'PUT editar usuario',
+        usuarioEditado
+    });
+
+}
+
+const putAdmin = async (req = request, res = response) => {
+    const idAdmin = req.usuario.id;
+    const { _id, img, estado, google, ...resto } = req.body;
+
+    if ( resto.password ) {
+        //Encriptar password
+        const salt = bcrypt.genSaltSync();
+        resto.password = bcrypt.hashSync(resto.password, salt);
+    }
+
+    const usuarioEditado = await Usuario.findByIdAndUpdate(idAdmin, resto, {new: true});
 
     res.json({
         msg: 'PUT editar user',
@@ -84,6 +111,7 @@ module.exports = {
     getUsuarios,
     postUsuario,
     putUsuario,
+    putAdmin,
     deleteUsuario
 }
 

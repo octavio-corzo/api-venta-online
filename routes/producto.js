@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { postProducto, putProducto, deleteProducto, getProductos, getProductoPorID } = require('../controllers/producto');
+const { postProducto, putProducto, deleteProducto, getProductos, getProductoPorID, getProductosAgotados, getProductosMasvendidos } = require('../controllers/producto');
 const { existeProductoPorId } = require('../helpers/db-validators');
 
 //Controllers
@@ -15,6 +15,10 @@ const router = Router();
 
 //Obtener todas las categorias - publico
 router.get('/mostrar', getProductos);
+
+router.get('/productosAgotados', getProductosAgotados);
+
+router.get('/productosMasvendidos', getProductosMasvendidos);
 
 router.get('/:id', [
     check('id', 'No es un id de Mongo Válido').isMongoId(),

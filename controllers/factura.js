@@ -13,8 +13,9 @@ const getFacturas = async (req = request, res = response) => {
             
             .populate('admin', 'correo')
             .populate('cliente', 'nombre')
-            .populate('carrito'),
-        Carrito.find(query).populate('productos')
+            .populate('carrito', "carrito").populate('productos'),
+
+        //Carrito.find(query).populate('productos')
     ]);
 
     res.json({
