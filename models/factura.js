@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const FacturaSchema = Schema({
     nombre: {
         type: String,
-        required: [true , 'El nombre de la factura es obligatorio']
+        required: [true , 'El identificador de la factura es obligatorio']
     },
     estado: {
         type: Boolean,
@@ -28,6 +28,10 @@ const FacturaSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Carrito',
         required: true
+    },
+    total: {
+        type: Number,
+        default: 0
     }
 });
 

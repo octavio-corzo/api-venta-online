@@ -19,6 +19,10 @@ const CarritoSchema = Schema({
         ref: 'Producto',
         default: null
     }],
+    total: {
+        type: Number,
+        default: 0
+    },
 });
 
 

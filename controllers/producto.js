@@ -36,7 +36,7 @@ const getProductosAgotados = async (req = request, res = response) => {
     ]);
 
     res.json({
-        msg: 'Productos agotados',
+        msg: 'Lista de productos agotados:',
         listaProductos
     });
 
@@ -47,7 +47,7 @@ const getProductosMasvendidos = async (req = request, res = response) => {
     const query = await Producto.find().sort({ventas: -1}).limit(5);
 
     res.status(201).json({
-        msg: "Productos más vendidos",
+        msg: "Lista de productos más vendidos:",
         query
     })
 
@@ -123,10 +123,6 @@ const deleteProducto = async (req = request, res = response) => {
         productoEliminado
     });
 }
-
-
-
-
 module.exports = {
     getProductos,
     getProductoPorID,

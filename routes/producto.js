@@ -16,7 +16,10 @@ const router = Router();
 //Obtener todas las categorias - publico
 router.get('/mostrar', getProductos);
 
-router.get('/productosAgotados', getProductosAgotados);
+router.get('/productosAgotados',[
+    validarJWT,
+    esAdminRole
+],getProductosAgotados);
 
 router.get('/productosMasvendidos', getProductosMasvendidos);
 

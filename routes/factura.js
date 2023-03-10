@@ -7,6 +7,7 @@ const { postFactura, getFacturas, getFacturaPorID } = require('../controllers/fa
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { tieneRole, esAdminRole } = require('../middlewares/validar-roles');
+const { validarStock } = require('../middlewares/validar-stock');
 
 const router = Router();
 
@@ -25,34 +26,8 @@ router.get('/mostrar', getFacturas);
 router.post('/agregarFactura', [
     validarJWT,
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    validarStock,
     validarCampos
 ],postFactura);
-
-// router.post('/agregarProductos', [
-//     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    
-//     validarCampos,
-// ] ,postProducto);
-
-// // Actualizar categoria con token valido
-// router.put('/editar/:id', [
-//     validarJWT,
-//     check('nombre', 'El nombre es obligatorio.').not().isEmpty(),
-//     check('id').custom( existeProductoPorId ),
-//     validarCampos
-// ], putProducto)
-
-// //Eliminar - privado - solo admin puede eliminar
-// router.delete('/eliminar/:id',[
-//     validarJWT, 
-//     esAdminRole,
-//     //tieneRole('ADMIN_ROLE'),
-//     check('id', 'No es un id valido.').isMongoId(),
-//     check('id').custom( existeProductoPorId ),
-//     validarCampos
-// ],
-
-// deleteProducto)
-
 
 module.exports = router;

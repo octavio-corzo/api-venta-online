@@ -20,14 +20,10 @@ const getUsuarios = async (req = request, res = response) => {
 
 }
 
-const getUsuariosPorId = async (req = request, res = response) => {
-
-    const { id } = req.params;
-    const userById = await Usuario.findById(id)
-        .populate('usuario', 'correo')
-        .populate('categoria', 'nombre')
-
-
+const getComprasUsuario = async (req = request, res = response) => {
+    const idUsuario = req.usuario.id;
+    //const { id } = req.params;
+    const userById = await Usuario.findById(idUsuario).populate('compras');
     res.status(201).json(userById);
 
 }
@@ -109,6 +105,7 @@ const deleteUsuario = async(req = request, res = response) => {
 
 module.exports = {
     getUsuarios,
+    getComprasUsuario,
     postUsuario,
     putUsuario,
     putAdmin,
