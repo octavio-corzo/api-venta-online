@@ -3,11 +3,12 @@ const bcrypt = require('bcryptjs');
 
 const { generarJWT } = require('../helpers/generar-jwt');
 const Usuario = require('../models/usuario');
-const Producto = require('../models/producto')
+const Producto = require('../models/producto');
+const Factura = require('../models/factura');
 
 const login = async (req = request, res = response) => {
 
-    const { correo, password } = req.body;
+    const { correo, password, } = req.body;
 
     try {
 
@@ -15,7 +16,7 @@ const login = async (req = request, res = response) => {
         const usuario = await Usuario.findOne({ correo });
         if ( !usuario ) {
             return res.status(400).json({
-                msg: 'Usuario / Password no son correctos - (El correo no existe jaja)'
+                msg: 'Usuario / Password no son correctos'
             });
         }
 
@@ -34,13 +35,18 @@ const login = async (req = request, res = response) => {
             });
         }
 
+        //Visualizar compras del usuario
+        const compras = await Factura.find({ cliente: usuario.id});
+
         //Generar JWT
         const token = await generarJWT( usuario.id );
+        
 
         res.json({
             msg: 'Login PATH',
             correo, password,
-            token
+            token,
+            compras
         })
 
     } catch (error) {

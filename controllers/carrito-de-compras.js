@@ -23,7 +23,7 @@ const postCarrito = async (req = request, res = response) => {
   const carrito = req.body.carrito.toUpperCase();
   const { productos, cantidadProductos } = req.body;
   const carritoDB = await Carrito.findOne({ carrito });
-  let totales = 0;
+  let total = 0;
   let totalFinal = 0;
 
   //Si el carrito existe no lo agrega.
@@ -37,12 +37,10 @@ const postCarrito = async (req = request, res = response) => {
     const cantidadxProducto = cantidadProductos[i];
     const listaProductos = productos[i];
     const query = await Producto.findById(listaProductos);
-    let precio = query.precio;
-    let cantidad = parseInt(cantidadxProducto);
-
-    totales = precio * cantidad;
-
-    totalFinal = totales + totalFinal;
+    const precio = query.precio;
+    const cantidad = parseInt(cantidadxProducto);
+    total = precio * cantidad;
+    totalFinal = total + totalFinal;
   }
 
   const data = {
@@ -64,7 +62,6 @@ const putCarrito = async (req = request, res = response) => {
 
   resto.carrito = resto.carrito.toUpperCase();
   resto.productos = [...req.body.productos];
-  resto.usuario = req.usuario._id;
 
   const carritoEditado = await Carrito.findByIdAndUpdate(id, resto, {
     new: true,
@@ -73,8 +70,19 @@ const putCarrito = async (req = request, res = response) => {
   res.status(201).json(carritoEditado);
 };
 
+const deleteCarrito = async (req = request, res = response) => {
+  const {id} = req.params;
+    const CarritoEliminado = await Carrito.findByIdAndDelete(id, {new: true});
+    
+    res.json({
+        msg: "DELETE",
+        CarritoEliminado
+    });
+};
+
 module.exports = {
   getCarrito,
   postCarrito,
   putCarrito,
+  deleteCarrito
 };

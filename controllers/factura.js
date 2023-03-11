@@ -31,17 +31,16 @@ const getFacturaPorID = async (req = request, res = response) => {
         //.populate('usuario', 'nombre')
         .populate('admin', 'correo')
         .populate('cliente', 'nombre')
-        .populate('carrito', )
+        .populate('carrito', ).populate('productos');
 
     res.status(201).json(facturaById);
 
 }
 
 const postFactura = async (req = request, res = response) => {
-
     const { estado, admin, ...body } = req.body;
     const { productos, cantidadProductos } = req.body;
-    let totales = 0;
+    let total = 0;
     let totalFinal = 0;
 
     const facturaDB = await Factura.findOne({ nombre: body.nombre });
@@ -60,9 +59,8 @@ const postFactura = async (req = request, res = response) => {
         let precio = query.precio;
         let cantidad = parseInt(cantidadxProducto);
     
-        totales = precio * cantidad;
-    
-        totalFinal = totales + totalFinal;
+        total = precio * cantidad;
+        totalFinal = total + totalFinal;
     }
 
     //Generar la data a guardar
@@ -81,43 +79,8 @@ const postFactura = async (req = request, res = response) => {
     res.status(201).json( factura );
    
 }
-
-const putProducto = async (req = request, res = response) => {
-    const { id } = req.params;
-
-    const { estado, usuario, ...restoData } = req.body;
-
-    if (restoData.nombre) {
-        restoData.nombre = restoData.nombre.toUpperCase();
-        restoData.usuario = req.usuario._id;
-    }
-
-    const productoActualizado = await Producto.findByIdAndUpdate(id, restoData, ({ new: true }));
-
-    res.status(201).json({
-        msg: 'Put Controller Producto',
-        productoActualizado
-    });
-}
-
-const deleteProducto = async (req = request, res = response) => {
-    
-    const {id} = req.params;
-    const productoEliminado = await Producto.findByIdAndUpdate(id, {estado: false}, {new: true});
-    
-    res.json({
-        msg: "DELETE",
-        productoEliminado
-    });
-}
-
-
-
-
 module.exports = {
     getFacturas,
     getFacturaPorID,
     postFactura,
-    putProducto,
-    deleteProducto
 }

@@ -116,7 +116,7 @@ const putProducto = async (req = request, res = response) => {
 const deleteProducto = async (req = request, res = response) => {
     
     const {id} = req.params;
-    const productoEliminado = await Producto.findByIdAndUpdate(id, {estado: false}, {new: true});
+    const productoEliminado = await Producto.findByIdAndDelete(id, {new: true});
     
     res.json({
         msg: "DELETE",

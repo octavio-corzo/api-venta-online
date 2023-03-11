@@ -89,13 +89,23 @@ const putAdmin = async (req = request, res = response) => {
 }
 
 const deleteUsuario = async(req = request, res = response) => {
-    //Req.params sirve para traer parametros de las rutas
     const { id } = req.params;
-    //Eliminar fisicamente de la DB
-    //const usuarioEliminado = await Usuario.findByIdAndDelete( id);
 
     //Eliminar cambiando el estado a false
-    const usuarioEliminado = await Usuario.findByIdAndUpdate(id, { estado: false });
+    const usuarioEditado = await Usuario.findByIdAndUpdate(id, { estado: false });
+
+    res.json({
+        msg: 'DELETE eliminar user',
+        usuarioEditado
+    });
+}
+
+const deleteAdmin = async(req = request, res = response) => {
+    const idAdmin = req.usuario.id;
+    const { id } = req.params;
+    
+    //Eliminar cambiando el estado a false
+    const usuarioEliminado = await Usuario.findByIdAndUpdate(idAdmin, { estado: false });
 
     res.json({
         msg: 'DELETE eliminar user',
@@ -109,7 +119,8 @@ module.exports = {
     postUsuario,
     putUsuario,
     putAdmin,
-    deleteUsuario
+    deleteUsuario, 
+    deleteAdmin
 }
 
 

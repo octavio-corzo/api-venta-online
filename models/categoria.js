@@ -13,7 +13,12 @@ const CategoriaSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Usuario',
         required: true
-    }
+    },
+    productos: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Producto',
+        required: true
+    }]
 });
 
 module.exports = model('Categoria', CategoriaSchema);

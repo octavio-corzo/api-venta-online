@@ -1,7 +1,7 @@
 //Importaciones
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getUsuarios, postUsuario, putUsuario, deleteUsuario, putAdmin, getComprasUsuario } = require('../controllers/usuario');
+const { getUsuarios, postUsuario, putUsuario, deleteUsuario, putAdmin, getComprasUsuario, deleteAdmin } = require('../controllers/usuario');
 const { esRoleValido, emailExiste, existeUsuarioPorId } = require('../helpers/db-validators');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
@@ -27,6 +27,15 @@ router.post('/agregarUsuario', [
     validarCampos,
 ] ,postUsuario);
 
+router.post('/registroUsuario', [
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    check('password', 'El password debe de ser más de 6 digitos').isLength( { min: 6 } ),
+    check('correo', 'El correo no es valido').isEmail(),
+    check('correo').custom( emailExiste ),
+    check('rol').default('CLIENT_ROLE').custom(  esRoleValido ),
+    validarCampos,
+] ,postUsuario);
+
 router.post('/agregarAdmin', [
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('password', 'El password debe de ser más de 6 digitos').isLength( { min: 6 } ),
@@ -38,6 +47,7 @@ router.post('/agregarAdmin', [
 ] ,postUsuario);
 
 router.put('/editar/:id', [
+    validarJWT,
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( existeUsuarioPorId ),
     validarCampos
@@ -49,12 +59,10 @@ router.put('/editarAdmin', [
     validarCampos
 ] ,putAdmin);
 
-router.delete('/eliminarAdmin/:id', [
+router.delete('/eliminarAdmin', [
     validarJWT,
-    check('id', 'No es un ID válido').isMongoId(),
-    check('id').custom( existeUsuarioPorId ),
     validarCampos
-] ,deleteUsuario);
+] ,deleteAdmin);
 
 
 router.delete('/eliminar/:id', [

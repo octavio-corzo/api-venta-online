@@ -58,7 +58,9 @@ const putCategoria = async (req = request, res = response) => {
   const { estado, usuario, ...resto } = req.body;
 
   resto.nombre = resto.nombre.toUpperCase();
-  resto.usuario = req.usuario._id;
+  //resto.usuario = req.usuario._id;
+  resto.productos = [...req.body.productos];
+  
 
   //Editar o actualizar la categoria
   const categoria = await Categoria.findByIdAndUpdate(id, resto, { new: true });

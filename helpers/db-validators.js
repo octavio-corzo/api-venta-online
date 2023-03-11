@@ -2,8 +2,8 @@ const Role = require('../models/role');
 const Usuario = require('../models/usuario');
 const Categoria = require('../models/categoria');
 const Producto = require('../models/producto');
+const Carrito = require('../models/carrito-de-compras');
 
-//Este archivo maneja validaciones personalizadas
 
 const esRoleValido = async( rol = '' ) => {
 
@@ -51,6 +51,17 @@ const existeCategoriaPorId = async(id) => {
 
 }
 
+const existeCarritoPorId = async(id) => {
+
+    //Verificar si el ID existe
+    const existeCarrito = await Carrito.findById(id);
+
+    if ( !existeCarrito ) {
+        throw new Error(`El id ${ id } no existe en la DB`);
+    }
+
+}
+
 const existeProductoPorId = async(id) => {
 
     //Verificar si el ID existe
@@ -69,5 +80,6 @@ module.exports = {
     emailExiste,
     existeUsuarioPorId,
     existeCategoriaPorId,
-    existeProductoPorId
+    existeProductoPorId,
+    existeCarritoPorId
 }
